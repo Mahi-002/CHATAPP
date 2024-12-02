@@ -23,7 +23,7 @@ exports.register =async (req,res,next)=>{
 
         const hash = await bcrypt.hash(password, 10);
         await User.create({name: name, email: email, phone: phone, password: hash});
-        res.status(201).json({success:true,message: "User account created. \nPlease sign-in to continue"});
+        res.status(201).json({success:true,message: "User account created. \n Please sign-in to continue"});
     }
     catch(err){
         console.log('SignUp-Error: ',err);
@@ -44,7 +44,6 @@ exports.login = async(req,res,next)=>{
             user = user[0]
             console.log("user from db ",user.password)
 
-            //comparing password with has in db
             bcrypt.compare(password,user.password).then(result=>{
                 console.log("rsult ",result,"user.id: ",user.id)
                 if(result==false){
@@ -54,7 +53,6 @@ exports.login = async(req,res,next)=>{
                     })
                 }else{
 
-                    //create jwt token now
                     console.log("secret key ",process.env.tokenSecret)
                     var token = jwt.sign({ id: user.id }, process.env.tokenSecret);
                     res.status(200).json({
